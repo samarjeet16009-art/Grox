@@ -51,7 +51,7 @@ h1{font-size:clamp(40px,5.4vw,76px)}h2{font-size:clamp(34px,4.4vw,60px)}
 .pb{flex:1;display:flex;align-items:center;gap:8px;font:800 22px Urbanist;letter-spacing:-.4px}
 .gb{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;position:relative;flex:none}
 .dot{position:absolute;top:11px;right:12px;width:10px;height:10px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 0 2px #0b8f4d}
-.gr{font-size:36px;font-weight:700;letter-spacing:-1px;margin:18px 0 0;color:#cfeedd}.gs{font-size:19px;color:#a8dcc0;margin:0 0 18px;font-weight:500}
+.gr{font-size:36px;font-weight:700;letter-spacing:-1px;margin:28px 0 2px;color:#cfeedd}.gs{font-size:19px;color:#a8dcc0;margin:0 0 24px;font-weight:500}
 .lb{font-size:20px;color:#d4f3e2;font-weight:500}
 .bal{font-size:64px;font-weight:500;letter-spacing:-2.5px;line-height:1.1;background:linear-gradient(180deg,#fff 20%,#a8dcc0);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
 h3{margin:18px 0 10px;font-size:22px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
@@ -159,6 +159,9 @@ header{animation:drop .8s cubic-bezier(.2,.8,.2,1) backwards}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scr,.chap,.dots i,.btn,.fc,details,summary:after{transition:none}.scr.on .card,header,.tabs,.ld .chap.on>*,.ld .app,details[open] p{animation:none}.rvon .rv{opacity:1;transform:none;transition:none}.btn:after{display:none}#pg{transition:none}}
 footer{padding:36px 32px calc(40px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--m);font-weight:500;font-size:14px;background:#000a}
 footer nav{font-size:14px;gap:18px;color:var(--m)}
+/* background lines */
+.lg-on body:before{display:none!important}
+.lgc{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:block}
 </style></head><body>
 <div id="pg"></div>
 <a class="skip" href="#main">Skip to content</a>
@@ -215,7 +218,7 @@ footer nav{font-size:14px;gap:18px;color:var(--m)}
 <script>
 var P={menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',bell:'<path d="M6 17V11a6 6 0 0112 0v6l1.5 2h-15zM10 21h4"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'};
 function ic(n){return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#ig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+P[n]+'</svg>'}
-var HD='<div class="bar"><span class="gb gl">'+ic('menu')+'</span><span class="pb"><svg width="28" height="32" style="color:var(--g1)"><use href="#G"/></svg>Grox</span><span class="gb gl">'+ic('bell')+'<i class="dot"></i></span><span class="gb gl">'+ic('search')+'</span></div>';
+var HD='<div class="bar"><span class="gb gl">'+ic('menu')+'</span><span class="pb"><img src="logo.png" alt="Grox" width="28" height="28" style="border-radius:7px;object-fit:cover;margin-right:6px">Grox</span><span class="gb gl">'+ic('bell')+'<i class="dot"></i></span><span class="gb gl">'+ic('search')+'</span></div>';
 var sp=[34,0,58,22,0,74,38,26,0,50,64,18,0,40],er=[0,0,0,0,0,0,0,0,0,0,0,0,0,0];er[2]=96;er[12]=88;er[7]=30;
 var LT="TWTFSSMTWTFSSM".split(""),bars="",lt="";
 sp.forEach(function(v,i){bars+='<div><i style="height:'+v+'px"></i><i style="height:'+er[i]+'px"></i></div>';lt+='<span>'+LT[i]+'</span>'});
@@ -256,4 +259,42 @@ var els=[].slice.call(document.querySelectorAll(".sec>h2,.sec>.lead,.fc,details,
 if(!els.length)return;d.classList.add("rvon");
 var io=new IntersectionObserver(function(en){en.forEach(function(x){if(!x.isIntersecting)return;var t=x.target;t.classList.add("in");io.unobserve(t);setTimeout(function(){t.classList.remove("rv","in");t.style.removeProperty("--d")},1300)})},{threshold:.1,rootMargin:"0px 0px -5% 0px"});
 els.forEach(function(e){var i=[].indexOf.call(e.parentNode.children,e);if(e.classList.contains("fc"))e.style.setProperty("--d",(i%3*.08)+"s");else if(e.tagName=="DETAILS")e.style.setProperty("--d",(i*.06)+"s");e.classList.add("rv");io.observe(e)})})();
+</script><script>
+/* Background: a few faint theme-coloured data lines. Delete this block and the .lgc CSS to remove. */
+(function(){
+"use strict";
+var D=document,R=D.documentElement,RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+var cv=D.createElement("canvas"),x=cv.getContext("2d");if(!x)return;
+cv.className="lgc";cv.setAttribute("aria-hidden","true");
+D.body.insertBefore(cv,D.body.firstChild);R.classList.add("lg-on");
+
+var cur=[61,255,133],tg=[61,255,133],vw=0,vh=0,T=20,last=0;
+/* y position, amplitude, three uneven wave frequencies, opacity, width: spacing and shapes are deliberately irregular */
+var LN=[[.12,30,.0019,.0058,.0137,.1,1],[.3,46,.0015,.0047,.0109,.16,1],[.47,38,.0023,.0061,.0151,.28,1.5],[.66,58,.0013,.0041,.0093,.11,1],[.86,34,.0021,.0069,.0127,.17,1]];
+
+function hex(h){h=String(h).trim().replace("#","");if(h.length==3)h=h.replace(/./g,"$&$&");return[parseInt(h.slice(0,2),16)||0,parseInt(h.slice(2,4),16)||0,parseInt(h.slice(4,6),16)||0]}
+function sync(){tg=hex(getComputedStyle(R).getPropertyValue("--g1"));if(RM){cur=tg.slice();draw()}}
+function size(){var d=Math.min(devicePixelRatio||1,2);vw=innerWidth;vh=innerHeight;cv.width=Math.round(vw*d);cv.height=Math.round(vh*d);x.setTransform(d,0,0,d,0,0);if(RM)draw()}
+
+function draw(){
+ var sy=RM?0:scrollY,c=cur.map(Math.round),col=function(a){return"rgba("+c[0]+","+c[1]+","+c[2]+","+a+")"};
+ x.clearRect(0,0,vw,vh);
+ for(var i=0;i<LN.length;i++){var l=LN[i],base=vh*l[0],ph=sy*.0016*(1+i*.2)+i*2.1,g=x.createLinearGradient(0,0,vw,0);
+  /* each line fades in and out at the edges instead of running wall to wall */
+  g.addColorStop(0,col(0));g.addColorStop(.14,col(l[5]));g.addColorStop(.86,col(l[5]));g.addColorStop(1,col(0));
+  x.strokeStyle=g;x.lineWidth=l[6];x.beginPath();
+  for(var px=-10;px<=vw+10;px+=8){
+   var y=base+l[1]*(.6*Math.sin(px*l[2]+T*.07*(1+i*.13)+ph)+.3*Math.sin(px*l[3]-T*.05+i*.9+ph*.6)+.1*Math.sin(px*l[4]+T*.11));
+   px<0?x.moveTo(px,y):x.lineTo(px,y)}
+  x.stroke()}
+}
+function loop(ts){requestAnimationFrame(loop);var dt=Math.min(.1,(ts-last)/1000||.016);last=ts;T+=dt;
+ var k=1-Math.exp(-dt*4);for(var i=0;i<3;i++)cur[i]+=(tg[i]-cur[i])*k;draw()}
+
+var lw=0,lh=0;addEventListener("resize",function(){if(innerWidth===lw&&Math.abs(innerHeight-lh)<140)return;lw=innerWidth;lh=innerHeight;size()});
+if(RM)addEventListener("scroll",function(){requestAnimationFrame(draw)},{passive:true});
+var s0=window.setTh;if(s0)window.setTh=function(i){s0.apply(this,arguments);sync()};
+lw=innerWidth;lh=innerHeight;size();sync();cur=tg.slice();
+if(RM)draw();else requestAnimationFrame(loop);
+})();
 </script></body></html>
